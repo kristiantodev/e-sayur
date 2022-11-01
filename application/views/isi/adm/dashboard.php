@@ -32,7 +32,7 @@
                                                     <h6 class="mt-0 text-white-50"><a href='<?php echo site_url();?>adm/alumni' class="text-white">Total</a></h6>
                                                     <h4 class="mb-3 mt-0"><b> 
                                                     <?php $array = array('deleted' => 0);
-  echo $total = $this->db->where($array)->count_all_results('sayur');?> Distributor</b></h4>
+  echo $total = $this->db->where($array)->count_all_results('sayur');?> Sayur</b></h4>
                                                     
                                                 </div>
                                                 <div class="mini-stat-icon">
@@ -51,8 +51,8 @@
                                                 <div class="text-white">
                                                     <h6 class="mt-0 text-white-50"><a href='<?php echo site_url();?>adm/alumni' class="text-white">Total</a></h6>
                                                     <h4 class="mb-3 mt-0"><b> 
-                                                    <?php $array = array('deleted' => 0);
-  echo $total = $this->db->where($array)->count_all_results('sayur');?> Lokasi</b></h4>
+                                                    <?php $array = array('level' => 'Konsumen');
+  echo $total = $this->db->where($array)->count_all_results('user');?> Konsumen</b></h4>
                                                     
                                                 </div>
                                                 <div class="mini-stat-icon">
@@ -72,8 +72,8 @@
                                                 <div class="text-white">
                                                     <h6 class="mt-0 text-white-50"><a href="" class="text-white">Total</a></h6>
                                                     <h4 class="mb-3 mt-0"><b>
-                                                    <?php $array = array('deleted' => 0);
-  echo $total = $this->db->where($array)->count_all_results('sayur');?> Bahan Pokok</b></h4>
+                                                    <?php $array = array();
+  echo $total = $this->db->where($array)->count_all_results('transaksi');?> Transaksi</b></h4>
                                                     
                                                 </div>
                                                 <div class="mini-stat-icon">

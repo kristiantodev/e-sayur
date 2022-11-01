@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 01 Nov 2022 pada 10.59
+-- Waktu pembuatan: 01 Nov 2022 pada 16.07
 -- Versi server: 5.7.21-log
 -- Versi PHP: 8.0.0
 
@@ -62,8 +62,8 @@ CREATE TABLE `keranjang` (
 --
 
 INSERT INTO `keranjang` (`id_keranjang`, `id_user`, `id_sayur`, `status`, `deleted`, `qty`, `id_transaksi`) VALUES
-(1, '6360599b81dcc', 2, 1, 0, 0, 0),
-(3, '6360599b81dcc', 1, 1, 0, 0, 0);
+(1, '6360599b81dcc', 2, 2, 0, 6, 216956834),
+(2, '6360599b81dcc', 1, 2, 0, 2, 1384098440);
 
 -- --------------------------------------------------------
 
@@ -92,6 +92,27 @@ INSERT INTO `sayur` (`id_sayur`, `nm_sayur`, `foto`, `keterangan`, `deleted`, `i
 -- --------------------------------------------------------
 
 --
+-- Struktur dari tabel `transaksi`
+--
+
+CREATE TABLE `transaksi` (
+  `id_transaksi` int(11) NOT NULL,
+  `tgl_transaksi` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id_user` varchar(30) NOT NULL,
+  `status` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `transaksi`
+--
+
+INSERT INTO `transaksi` (`id_transaksi`, `tgl_transaksi`, `id_user`, `status`) VALUES
+(216956834, '2022-11-01 12:25:30', '6360599b81dcc', 0),
+(1384098440, '2022-11-01 12:24:38', '6360599b81dcc', 0);
+
+-- --------------------------------------------------------
+
+--
 -- Struktur dari tabel `user`
 --
 
@@ -112,7 +133,8 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id_user`, `username`, `password`, `nm_user`, `level`, `foto`, `created_at`) VALUES
 ('1', 'admin', '$2y$10$Yu1ziUFIrjktqeBPpLtfiO5mWh9XXdhdwHIpYT8ThaGTXl13NJa1q', 'Admin', 'Administrator', '1.jpg', '2022-10-31 15:05:16'),
 ('6360595f4fad9', 'kris', '$2y$10$tm8nVz3ZwKD7lHoGpVRaxO2gfsgmavRDoZj2efnxDZ6xS7c/47obu', 'Kristianto', 'Konsumen', '1.jpg', '2022-10-31 23:25:19'),
-('6360599b81dcc', 'amal', '$2y$10$LTvATGelc90Zr3KwhO71YOfkirNal9rzV.InEpOUgAa7ULBW4IJCu', 'Ikhlasul Amal', 'Konsumen', '1.jpg', '2022-10-31 23:26:19');
+('6360599b81dcc', 'amal', '$2y$10$LTvATGelc90Zr3KwhO71YOfkirNal9rzV.InEpOUgAa7ULBW4IJCu', 'Ikhlasul Amal', 'Konsumen', '1.jpg', '2022-10-31 23:26:19'),
+('636121a25eb8c', 'april', '$2y$10$KMRCr2AGJL5DY66reEP62et5XEdxQ4cKKhIEnLWalbCLVF/tZgwnO', 'Aprilia Hasanah', 'Konsumen', '1.jpg', '2022-11-01 13:39:46');
 
 --
 -- Indexes for dumped tables
@@ -135,6 +157,12 @@ ALTER TABLE `keranjang`
 --
 ALTER TABLE `sayur`
   ADD PRIMARY KEY (`id_sayur`);
+
+--
+-- Indeks untuk tabel `transaksi`
+--
+ALTER TABLE `transaksi`
+  ADD PRIMARY KEY (`id_transaksi`);
 
 --
 -- Indeks untuk tabel `user`

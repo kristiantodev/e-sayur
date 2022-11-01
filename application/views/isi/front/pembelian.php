@@ -13,7 +13,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="page-title-box">
-                                    <h3 class="page-title"><b><i class="fas fa-shopping-cart"></i>&nbsp; Keranjang Sayur (<?php echo $this->session->userdata('nm_user'); ?>)</b></h3>
+                                    <h3 class="page-title"><b><i class="fas fa-shopping-bag"></i>&nbsp; Riwayat Pembelian (<?php echo $this->session->userdata('nm_user'); ?>)</b></h3>
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item active">Lapak Toko Sayur Mayur Om Hendrik</li>
                                     </ol>
@@ -32,42 +32,64 @@
                                 <div class="col-12">
                             <div class="card m-b-20">
                                         <div class="card-body">
-  <form action="<?php echo site_url('informasi/checkout'); ?>" method="post">
             <table class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                                                 <thead>
                                                 <tr>
-                                    <th width="9"><b>Pilih</b></th>
-                                    <th><b>Nama Sayur</b></th>
-                                    <th><b>Harga</b></th>
-                                    <th><b>Qty</b></th>
+                                    <th width="9"><b>No</b></th>
+                                    <th><b>Tanggal Transaksi</b></th>
+                                    <th><b>Sayur yang dibeli</b></th>
+                                    <th><b>Total</b></th>
+                                    <th><b>Status</b></th>
+                                    <th><b>Aksi</b></th>
                                 </tr>
                                                 </thead>
     
     
                                                 <tbody>
-                                             <?php $no=1;
-         foreach ($sayurku as $sayur): ?>
+           <?php $no=1; foreach ($transaksiku as $t): ?>
+
+           <?php
+              $listSayur = $this->db->query("SELECT*FROM keranjang LEFT JOIN sayur ON sayur.id_sayur=keranjang.id_sayur WHERE keranjang.status=2 AND id_transaksi='$t->id_transaksi' AND keranjang.deleted=0")->result();
+            ?>
+                 
                                 
                                 <tr>
-                                    <td width="7" align="center"><input type="checkbox" name="pilihanku[]" value="<?php echo $sayur->id_keranjang ?>" id="md_checkbox_<?php echo $no++; ?>" class="filled-in chk-col-navy"/></td>
-                                    <td>&nbsp;&nbsp;&nbsp;<img src="<?php echo base_url('assets/images/sayur/'.$sayur->foto) ?>" alt="" class="thumb-md rounded-circle"> &nbsp;&nbsp;&nbsp;<?php echo $sayur->nm_sayur ?></td>
-                                    <td>Rp. <?php echo $sayur->harga ?></td>
-                                    <td><input type="number" name="qty[]" min="0" value="<?php echo $sayur->qty ?>"/></td>
-
-                                    <input type="hidden" name="keranjang[]" value="<?php echo $sayur->id_keranjang ?>" id="md_checkbox_<?php echo $no++; ?>" class="filled-in chk-col-navy"/>
-                                    
+                                    <td width="7" align="center"><?php echo $no++; ?></td>
+                                    <td><?php echo $t->tgl_transaksi ?></td>
+                                    <td>
+                                       <?php foreach ($listSayur  as $s): ?>
+                                          <ul>
+                                          <li><?php echo $s->nm_sayur ?> | Qty : <?php echo $s->qty ?> | Rp. <?php echo $s->harga ?> </li>
+                                          </ul>
+                                       <?php endforeach; ?>
+                                    </td>
+                                    <td align="center">Rp. <?php echo $t->total ?></td>
+                                    <td align="center">
+                                      
+                                      <?php 
+                                         $icon="";
+                                            $btn="";
+                                            $remark="";
+                                    if($t->status == 0){
+                                            $icon="fas fa-info-circle";
+                                            $btn="btn btn-info btn-sm";
+                                            $remark="New";
+                                      }else if($t->status == 1){
+                                            $icon="fas fa-info-circle";
+                                            $btn="btn btn-warning btn-sm";
+                                            $remark="Revisi";
+                                      }
+                                       ?>
+                                       <button class="<?=$btn?>"><i class="<?=$icon?>"></i> &nbsp;<?=$remark?></span></button>
+                                    </td>
+                                    <td>
+                                      <a onclick="deleteConfirm('<?php echo site_url('informasi/addKeranjang/'.$t->id_transaksi); ?>')" href="#!" data-toggle="tooltip" class="btn btn-success waves-effect waves-light tombol-hapus"><span class="icon-label" data-toggle="modal" data-target="#modal-danger"><i class="fas fa-cloud-upload-alt"></i>&nbsp; Bayar </span><span class="btn-text"></span></a>
+                                    </td>
                                 </tr>
-                                <?php endforeach; ?>
+                
+            <?php endforeach; ?>
                                                 </tbody>
                                             </table>
-                                            <p align="">
-                                              <button type="submit"  class="btn btn-success">
-                                    <i class="fas fa-money-bill-alt"></i>&nbsp; Checkout Pembelian
-                                </button>
-                                            </p>
-                                            
-                                          </form>
-                                                
                                         </div>
                                     </div>
                                     </div>

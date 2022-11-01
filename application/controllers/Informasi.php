@@ -60,6 +60,20 @@ class Informasi extends My_Controller {
          $this->MyPageSayur('isi/front/keranjang',$data);
     }
 
+    public function pembelian()
+    {
+        $idUser= $this->session->userdata("id_user");
+        $sayur = $this->db->query("SELECT*FROM keranjang LEFT JOIN sayur ON sayur.id_sayur=keranjang.id_sayur WHERE keranjang.status=2 AND id_user='$idUser' AND keranjang.deleted=0 ");
+        $transaksi = $this->db->query("SELECT transaksi.id_transaksi, transaksi.status, tgl_transaksi, SUM(sayur.harga*keranjang.qty) AS total FROM transaksi LEFT JOIN keranjang ON keranjang.id_transaksi=transaksi.id_transaksi LEFT JOIN sayur ON keranjang.id_sayur=sayur.id_sayur WHERE transaksi.id_user='$idUser' GROUP BY transaksi.id_transaksi");
+
+         $data=array(
+            "sayurku"=>$sayur->result(),
+            "transaksiku"=>$transaksi->result(),
+        );
+
+         $this->MyPageSayur('isi/front/pembelian',$data);
+    }
+
 
 public function register()
     {
@@ -129,21 +143,39 @@ public function register()
     }
 
 
-    public function pembelian(){
+ public function checkout(){
     $check = $this->input->post('pilihanku');
     $qtyCek = $this->input->post('qty');
-    for ($i=0; $i < sizeof($check); $i++) { 
-            $data = array(
-                    'id_keranjang'=> $check[$i],
-                    'qty' => $qtyCek[$i],
-                    'status' => 2,
-                    'id_keranjang' => ""
-                );
-             $this->db->insert('kep_plulusan',$data);
-          }
+    $keranjangCek = $this->input->post('keranjang');
+    
+    $idku = rand();
+    for ($i=0; $i < sizeof($check); $i++) {
+            $u=0;
+            while ($u < sizeof($qtyCek)) {
 
-            $this->session->set_flashdata('sukses',"Data Berhasil Disimpan");
-            redirect('adm/stakeholder');
+                if($check[$i] == $keranjangCek[$u]){
+                    $data = array(
+                    'qty' => $qtyCek[$u],
+                    'status' => 2,
+                    'id_transaksi' => $idku
+                    );
+                    $this->db->where('id_keranjang', $check[$i]);
+                    $this->db->update('keranjang',$data);
+                    break;
+                }
+
+                 $u++;
+            } 
+               
+    }
+                 $dataTransaksi = array(
+                    'id_transaksi' => $idku,
+                    'id_user' => $this->session->userdata("id_user")
+                  );
+
+            $this->db->insert('transaksi',$dataTransaksi);
+            $this->session->set_flashdata('sukses',"berhasil");
+            redirect('informasi/cart');
   }
 
 	

@@ -108,7 +108,7 @@
                             </li>
 
                             <li>
-                                <a href="<?php echo site_url();?>informasi/register" class="waves-effect">
+                                <a href="<?php echo site_url();?>informasi/pembelian" class="waves-effect">
                                     <font color=""><i class="fas fa-shopping-bag"></i></font><span> Pembelian </span>
                                 </a>
                             </li>

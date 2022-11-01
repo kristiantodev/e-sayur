@@ -94,6 +94,18 @@
                                     <font color=""><i class="fas fa-seedling"></i></font><span> Sayur</span>
                                 </a>
                             </li>
+
+                            <li>
+                                <a href="<?php echo site_url();?>adm/pembelian" class="waves-effect">
+                                    <font color=""><i class="fas fa-shopping-bag"></i></font><span> Pembelian Masuk</span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="<?php echo site_url();?>adm/laporan" class="waves-effect">
+                                    <font color=""><i class="far fa-folder-open"></i></font><span> Laporan</span>
+                                </a>
+                            </li>
                            
 
                             <li>
