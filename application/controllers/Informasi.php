@@ -64,7 +64,7 @@ class Informasi extends My_Controller {
     {
         $idUser= $this->session->userdata("id_user");
         $sayur = $this->db->query("SELECT*FROM keranjang LEFT JOIN sayur ON sayur.id_sayur=keranjang.id_sayur WHERE keranjang.status=2 AND id_user='$idUser' AND keranjang.deleted=0 ");
-        $transaksi = $this->db->query("SELECT transaksi.id_transaksi, transaksi.status, tgl_transaksi, SUM(sayur.harga*keranjang.qty) AS total FROM transaksi LEFT JOIN keranjang ON keranjang.id_transaksi=transaksi.id_transaksi LEFT JOIN sayur ON keranjang.id_sayur=sayur.id_sayur WHERE transaksi.id_user='$idUser' GROUP BY transaksi.id_transaksi");
+        $transaksi = $this->db->query("SELECT transaksi.id_transaksi, transaksi.file_pembayaran, transaksi.status, tgl_transaksi, SUM(sayur.harga*keranjang.qty) AS total FROM transaksi LEFT JOIN keranjang ON keranjang.id_transaksi=transaksi.id_transaksi LEFT JOIN sayur ON keranjang.id_sayur=sayur.id_sayur WHERE transaksi.id_user='$idUser' GROUP BY transaksi.id_transaksi");
 
          $data=array(
             "sayurku"=>$sayur->result(),
@@ -177,6 +177,50 @@ public function register()
             $this->session->set_flashdata('sukses',"berhasil");
             redirect('informasi/cart');
   }
+
+
+   public function pembayaran()
+    {
+        $this->form_validation->set_rules('id_transaksi', 'id_transaksi', 'required');
+        if($this->form_validation->run()==FALSE){
+            $this->session->set_flashdata('error',"Data Gagal Di Tambahkan");
+            redirect('informasi/pembelian');
+        }else{
+
+            $id = rand();
+            $config['upload_path']          = './assets/images/bukti/';
+            $config['allowed_types']        = 'pdf';
+            $config['file_name']            = $id;
+            $config['overwrite']            = true;
+            $config['max_size']             = 2024;
+
+            $this->load->library('upload', $config);
+
+            $upload_image = $_FILES['file_pembayaran']['name'];
+
+            if($upload_image){
+              if ($this->upload->do_upload('file_pembayaran')) {
+                 $img = $this->upload->data('file_name');
+                  }else{
+                    $this->session->set_flashdata('sukses',"gagal");
+                    redirect('informasi/pembelian');
+                  }
+
+              }else{
+                $img = 'default.png';
+              }
+
+            $data=array(
+                "status"=>1,
+                "file_pembayaran"=>$img
+            );
+            $this->db->where('id_transaksi', $_POST['id_transaksi'] );
+            $this->db->update('transaksi',$data);
+
+            $this->session->set_flashdata('sukses',"berhasil");
+            redirect('informasi/pembelian');
+        }
+    }
 
 	
 }

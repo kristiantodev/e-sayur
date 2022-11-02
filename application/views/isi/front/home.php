@@ -69,7 +69,7 @@ Promo terbatas sampe akhir bulan ini aja ya dan hanya berlaku untuk pembelian me
                                                 <center>
                                                   <span class="btn btn-info waves-effect waves-light"><i class="fas fa-info-circle"></i> <?php echo $sayur->nm_kategori ?></span>
 
-                                                  <a onclick="deleteConfirm('<?php echo site_url('informasi/addKeranjang/'.$sayur->id_sayur); ?>')" href="#!" data-toggle="tooltip" class="btn btn-success waves-effect waves-light tombol-hapus"><span class="icon-label" data-toggle="modal" data-target="#modal-danger"><i class="fas fa-cart-arrow-down "></i> Beli </span><span class="btn-text"></span></a>
+                                                  <a onclick="deleteConfirm('<?php echo site_url('informasi/keranjang/'.$sayur->id_sayur); ?>')" href="#!" data-toggle="tooltip" class="btn btn-success waves-effect waves-light tombol-hapus"><span class="icon-label" data-toggle="modal" data-target="#modal-danger"><i class="fas fa-cart-arrow-down "></i> Beli </span><span class="btn-text"></span></a>
 
                                             </center>
                                         </div>

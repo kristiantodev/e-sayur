@@ -77,13 +77,34 @@
                                       }else if($t->status == 1){
                                             $icon="fas fa-info-circle";
                                             $btn="btn btn-warning btn-sm";
-                                            $remark="Revisi";
+                                            $remark="Proses";
+                                      }else if($t->status == 2){
+                                            $icon="fas fa-check";
+                                            $btn="btn btn-warning btn-sm";
+                                            $remark="Terkonfirmasi";
                                       }
                                        ?>
                                        <button class="<?=$btn?>"><i class="<?=$icon?>"></i> &nbsp;<?=$remark?></span></button>
                                     </td>
                                     <td>
-                                      <a onclick="deleteConfirm('<?php echo site_url('informasi/addKeranjang/'.$t->id_transaksi); ?>')" href="#!" data-toggle="tooltip" class="btn btn-success waves-effect waves-light tombol-hapus"><span class="icon-label" data-toggle="modal" data-target="#modal-danger"><i class="fas fa-cloud-upload-alt"></i>&nbsp; Bayar </span><span class="btn-text"></span></a>
+                                      <?php
+                                           if($t->status == 0){
+                                       ?>
+                                       <a data-toggle="modal" data-target="#bb-bayar<?php echo $t->id_transaksi ?>" class="btn btn-success waves-effect waves-light"><font color="white"><i class="fas fa-upload"></i> Pembayaran</font></a>
+
+                                        <?php
+                                           }
+                                       ?>
+
+                                       <?php
+                                           if($t->status == 1 || $t->status == 2){
+                                       ?>
+                                       <a data-toggle="modal" data-target="#bb-see<?php echo $t->id_transaksi ?>" class="btn btn-success waves-effect waves-light"><font color="white"><i class="fas fa-folder-open"></i>&nbsp; Bukti Bayar</font></a>
+                                       
+                                        <?php
+                                           }
+                                       ?>
+                                      
                                     </td>
                                 </tr>
                 
@@ -110,39 +131,70 @@
 
 
 
- <!-- modal -->
-<div class="modal modal-danger fade" id="modal-danger">
-    <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-danger">
-      <h5 class="modal-title"><font color='white'>Konfirmasi Penghapusan</font></h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      <?php $no=1; foreach ($transaksiku as $t): ?>
+                  <div class="modal fade text-left" id="bb-bayar<?=$t->id_transaksi?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header bg-success">
+                      <h6 class="modal-title"><font color='white'>Upload Bukti Pembayaran</font></h6>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
-      </div>
-      <div class="modal-body">
-      <p>Apakah anda yakin akan menghapus data ini ?</p>
-      </div>
-      <div class="modal-footer">
-      <a type="button" class="btn btn-secondary" data-dismiss="modal"><font color='white'><i class="fas fa-times"></i>&nbsp;Batal</font></a>
-      <a href="#" id="btn-delete" type="button" class="btn btn-danger mr-1"><i class="fas fa-trash"></i>&nbsp;Hapus</a>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
+                      </div>
+                      <form action="<?php echo site_url('informasi/pembayaran'); ?>" method="post" enctype="multipart/form-data">
+                        <input type="hidden" name="id_transaksi" value="<?=$t->id_transaksi?>">
+                      <div class="modal-body">
+                       
+                       <fieldset class="form-group floating-label-form-group">
+                          <label for="email">Upload Bukti Pembayaran *pdf</label>
+                          <input type="file" name="file_pembayaran" class="form-control">
+                        </fieldset>
+                         
+                      </div>
+                      <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary mr-1"  data-dismiss="modal" value="close">
+                                    <i class="fas fa-times"></i>&nbsp;Keluar
+                                </button>
+                                <button type="submit"  class="btn btn-success">
+                                    <i class="fa fa-upload"></i>&nbsp;Upload
+                                </button>
+                        
+                      </div>
+                      </form>
+                    </div>
+                    </div>
+                  </div>
 
-  
+                  <?php endforeach; ?>
 
-  <script>
-function deleteConfirm(url){
-    $('#btn-delete').attr('href', url);
-    $('#deleteModal').modal();
-}
-</script>
+                 <?php $no=1; foreach ($transaksiku as $t): ?>
+                  <div class="modal fade text-left" id="bb-see<?=$t->id_transaksi?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header bg-success">
+                      <h6 class="modal-title"><font color='white'>Bukti Pembayaran</font></h6>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      </div>
+                      
+                      <div class="modal-body">
+              
+                         <?php if ($t->file_pembayaran == "default.png") { ?>
+              <center>
+            <img src="<?php echo base_url('assets/images/bukti/'.$t->file_pembayaran) ?>" height="450"><br>Tidak ada file pembayaran yang dilampirkan</center>
+            <?php }else{ ?>
+<embed src="<?php echo base_url('assets/images/bukti/'.$t->file_pembayaran) ?>" width="750px" height="450px" />
+             <?php }?> 
 
+                      </div>
+                      <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary mr-1"  data-dismiss="modal" value="close">
+                                    <i class="fas fa-times"></i>&nbsp;Keluar
+                                </button>
+                      </div>
+                    </div>
+                    </div>
+                  </div>
 
-
-                  
+                  <?php endforeach; ?>

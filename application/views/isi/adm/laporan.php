@@ -1,3 +1,15 @@
+<textarea id="printing-css" style="display:none;">.no-print{display:none}</textarea>
+<iframe id="printing-frame" name="print_frame" src="about:blank" style="display:none;"></iframe>
+<script type="text/javascript">
+function printDiv(elementId) {
+ var a = document.getElementById('printing-css').value;
+ var b = document.getElementById(elementId).innerHTML;
+ window.frames["print_frame"].document.title = document.title;
+ window.frames["print_frame"].document.body.innerHTML = '<style>' + a + '</style>' + b;
+ window.frames["print_frame"].window.focus();
+ window.frames["print_frame"].window.print();
+}
+</script>
 <link href="<?php echo base_url();?>assets/style.css" rel="stylesheet" />
             <!-- ============================================================== -->
             <!-- Start right Content here -->
@@ -6,14 +18,11 @@
                 <!-- Start content -->
                 <div class="content">
                     <div class="container-fluid">
-      <div class="flash-data" data-flashdata="<?= $this->session->flashdata('sukses'); ?>"></div>
-                    
-
-
+      
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="page-title-box">
-                                    <h3 class="page-title"><b><i class="fas fa-shopping-bag"></i>&nbsp; Riwayat Pembelian</b></h3>
+                                    <h3 class="page-title"><b><i class="fas fa-folder-open"></i>&nbsp; Laporan Penjualan</b></h3>
                                     <ol class="breadcrumb">
                                         <li class="breadcrumb-item active">Lapak Toko Sayur Mayur Om Hendrik</li>
                                     </ol>
@@ -32,7 +41,9 @@
                                 <div class="col-12">
                             <div class="card m-b-20">
                                         <div class="card-body">
-            <table class="table table-striped table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                                          <div id="box"> 
+                                             <center><h4>LAPORAN PENJUALAN SAYUR <br> Lapak Toko Sayur Mayur Om Hendrik - Jakarta<br></h4></center><br>
+            <table class="table" border="1" style="border-collapse: collapse; border-spacing: 1; width: 100%;">
                                                 <thead>
                                                 <tr>
                                     <th width="9"><b>No</b></th>
@@ -41,7 +52,6 @@
                                     <th><b>Sayur yang dibeli</b></th>
                                     <th><b>Total</b></th>
                                     <th><b>Status</b></th>
-                                    <th><b>Aksi</b></th>
                                 </tr>
                                                 </thead>
     
@@ -88,112 +98,26 @@
                                        ?>
                                        <button class="<?=$btn?>"><i class="<?=$icon?>"></i> &nbsp;<?=$remark?></span></button>
                                     </td>
-                                    <td>
-                                      <?php
-                                           if($t->status == 1 || $t->status == 2){
-                                       ?>
-                                       <a data-toggle="modal" data-target="#bb-see<?php echo $t->id_transaksi ?>" class="btn btn-success waves-effect waves-light"><font color="white"><i class="fas fa-folder-open"></i>&nbsp; Bukti Bayar</font></a>
-                                       
-                                        <?php
-                                           }
-                                       ?>
-                                       <?php
-                                           if($t->status == 1){
-                                       ?>
-                                       <a onclick="deleteConfirm('<?php echo site_url('adm/pembelian/konfirmasi/'.$t->id_transaksi); ?>')" href="#!" data-toggle="tooltip" class="btn btn-success waves-effect waves-light tombol-hapus"><span class="icon-label" data-toggle="modal" data-target="#modal-danger"><i class="fas fa-check "></i> Konfirmasi </span><span class="btn-text"></span></a>
-                                       
-                                        <?php
-                                           }
-                                       ?>
-                                    </td>
+                                    
                                 </tr>
                 
             <?php endforeach; ?>
                                                 </tbody>
                                             </table>
+                                          </div>
+                                          <a href="javascript:printDiv('box');">
+                                            <button type="button" class="btn btn-primary waves-effect waves-light">
+                                    <i class="fa fa-print"></i> &nbsp;&nbsp;Cetak&nbsp;&nbsp;&nbsp;</button>
+                                </a>
                                         </div>
                                     </div>
                                     </div>
                                 </div> <!-- end col -->
                             </div> <!-- end row -->
-    
 
-        
-
-                           
-    
                         </div>
                         <!-- end page content-->
 
                     </div> <!-- container-fluid -->
 
-                </div> <!-- content -->
-
-                 <?php $no=1; foreach ($transaksiku as $t): ?>
-                  <div class="modal fade text-left" id="bb-see<?=$t->id_transaksi?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel16" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header bg-success">
-                      <h6 class="modal-title"><font color='white'>Bukti Pembayaran</font></h6>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                      </div>
-                      
-                      <div class="modal-body">
-              
-                         <?php if ($t->file_pembayaran == "default.png") { ?>
-              <center>
-            <img src="<?php echo base_url('assets/images/bukti/'.$t->file_pembayaran) ?>" height="450"><br>Tidak ada file pembayaran yang dilampirkan</center>
-            <?php }else{ ?>
-<embed src="<?php echo base_url('assets/images/bukti/'.$t->file_pembayaran) ?>" width="750px" height="450px" />
-             <?php }?> 
-
-                      </div>
-                      <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary mr-1"  data-dismiss="modal" value="close">
-                                    <i class="fas fa-times"></i>&nbsp;Keluar
-                                </button>
-                      </div>
-                    </div>
-                    </div>
-                  </div>
-
-                  <?php endforeach; ?>
-
- <!-- modal -->
-<div class="modal modal-success fade" id="modal-danger">
-    <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-success">
-      <h5 class="modal-title"><font color='white'>Konfirmasi Pembayaran</font></h5>
-      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-      </div>
-      <div class="modal-body">
-      <p>Apakah anda yakin akan mengkonfirmasi pembayaran ini ?</p>
-      </div>
-      <div class="modal-footer">
-      <a type="button" class="btn btn-secondary" data-dismiss="modal"><font color='white'><i class="fas fa-times"></i>&nbsp;Batal</font></a>
-      <a href="#" id="btn-delete" type="button" class="btn btn-success mr-1"><i class="fas fa-check"></i>&nbsp;Konfirmasi</a>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-
-  
-
-  <script>
-function deleteConfirm(url){
-    $('#btn-delete').attr('href', url);
-    $('#deleteModal').modal();
-}
-</script>
-
-
-
-                  
+                </div> <!-- content -->                  

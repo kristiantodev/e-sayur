@@ -1,7 +1,7 @@
   <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Pembelian extends My_Controller {
+class Laporan extends My_Controller {
 
 	function __construct(){
 		parent::__construct();		
@@ -24,23 +24,7 @@ class Pembelian extends My_Controller {
             "transaksiku"=>$transaksi->result(),
         );
 
-		 $this->Mypage('isi/adm/pembelian',$data);
+		 $this->Mypage('isi/adm/laporan',$data);
 	}
-
-    public function konfirmasi($id)
-    {
-        if($id==""){
-            $this->session->set_flashdata('error',"Data Gagal Di Update");
-            redirect('adm/pembelian');
-        }else{
-            $data=array(
-                "status"=> 2
-            );
-            $this->db->where('id_transaksi', $id);
-            $this->db->update('transaksi',$data);
-            $this->session->set_flashdata('sukses',"berhasil");
-            redirect('adm/pembelian');
-        }
-    }
 	
 }

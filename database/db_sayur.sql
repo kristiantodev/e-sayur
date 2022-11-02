@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 01 Nov 2022 pada 16.07
+-- Waktu pembuatan: 02 Nov 2022 pada 05.13
 -- Versi server: 5.7.21-log
 -- Versi PHP: 8.0.0
 
@@ -63,7 +63,8 @@ CREATE TABLE `keranjang` (
 
 INSERT INTO `keranjang` (`id_keranjang`, `id_user`, `id_sayur`, `status`, `deleted`, `qty`, `id_transaksi`) VALUES
 (1, '6360599b81dcc', 2, 2, 0, 6, 216956834),
-(2, '6360599b81dcc', 1, 2, 0, 2, 1384098440);
+(2, '6360599b81dcc', 1, 2, 0, 2, 1384098440),
+(4, '636121a25eb8c', 1, 2, 0, 12, 366782223);
 
 -- --------------------------------------------------------
 
@@ -99,16 +100,18 @@ CREATE TABLE `transaksi` (
   `id_transaksi` int(11) NOT NULL,
   `tgl_transaksi` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_user` varchar(30) NOT NULL,
-  `status` int(11) NOT NULL
+  `status` int(11) NOT NULL,
+  `file_pembayaran` varchar(60) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data untuk tabel `transaksi`
 --
 
-INSERT INTO `transaksi` (`id_transaksi`, `tgl_transaksi`, `id_user`, `status`) VALUES
-(216956834, '2022-11-01 12:25:30', '6360599b81dcc', 0),
-(1384098440, '2022-11-01 12:24:38', '6360599b81dcc', 0);
+INSERT INTO `transaksi` (`id_transaksi`, `tgl_transaksi`, `id_user`, `status`, `file_pembayaran`) VALUES
+(216956834, '2022-11-02 03:57:59', '6360599b81dcc', 2, '766102270.pdf'),
+(366782223, '2022-11-02 03:45:57', '636121a25eb8c', 0, NULL),
+(1384098440, '2022-11-01 12:24:38', '6360599b81dcc', 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -184,7 +187,7 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT untuk tabel `keranjang`
 --
 ALTER TABLE `keranjang`
-  MODIFY `id_keranjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_keranjang` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT untuk tabel `sayur`
